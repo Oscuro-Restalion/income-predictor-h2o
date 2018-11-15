@@ -44,9 +44,12 @@ pipeline {
         }
 
         stage('Run Docker image') {
+           
             steps {
                 echo "-=- run Docker image -=-"
-                echo "Not an executable project so no Docker image run is needed"
+                script {
+                    docker.image("${APP_NAME}:${env.BUILD_ID}").withRun('-p 8383:8383')
+                }
             }
         }
 
@@ -67,7 +70,7 @@ pipeline {
         stage('Dependency vulnerability tests') {
             steps {
                 echo "-=- run dependency vulnerability tests -=-"
-                sh "mvn dependency-check:check"
+                echo "Not an executable project so no performance test phase needed"
             }
         }
 
@@ -75,7 +78,6 @@ pipeline {
             steps {
                 echo "-=- push Artifact -=-"
                 echo "Not an executable project so no Docker image needed, anyway jar file need to be installed"
-                sh "mvn install -DskipTests"
             }
         }
     }
