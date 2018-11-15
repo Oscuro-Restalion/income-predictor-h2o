@@ -1,9 +1,7 @@
 #!groovy
 
 pipeline {
-    agent {
-        dockerfile true
-    }
+    agent any
 
     environment {
         ORG_NAME = "oscuroweb"
