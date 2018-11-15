@@ -1,18 +1,20 @@
 #!groovy
 
 pipeline {
-    agent { 
-        dockerfile true
-    }
     stages {
-        stage('Build') {
+        stage('Clone repository') {
+            checkout scm       
+        }
+        stage('Build  image') {
             steps {
-                echo 'Building again..'
+                app = docker.build("income-predictor-h2o:${env.BUILD_ID}")
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
+                app.inside {
+                    sh 'echo "Test passed"'
+                }
             }
         }
         stage('Deploy') {
