@@ -47,7 +47,7 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker run --rm -p 8383:8383 --name ${APP_NAME} ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run --rm -p 8383:8383 --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
