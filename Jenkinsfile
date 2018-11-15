@@ -37,10 +37,8 @@ pipeline {
         // }
 
         stage('Build Docker image') {
-            steps {
-                echo "-=- building image -=-"
-                docker.build("${APP_NAME}:${env.BUILD_ID}")
-            }
+            echo "-=- building image -=-"
+            docker.build("${APP_NAME}:${env.BUILD_ID}")
         }
 
         stage('Run Docker image') {
