@@ -20,13 +20,13 @@ pipeline {
         //     }
         // }
 
-//        stage('Unit tests') {
-//            steps {
-//                echo "-=- execute unit tests -=-"
-//                sh "mvn dependency:tree -Dverbose -Dincludes=oscuroweb"
-//                sh "mvn test"
-//            }
-//        }
+        //    stage('Unit tests') {
+        //        steps {
+        //            echo "-=- execute unit tests -=-"
+        //            sh "mvn dependency:tree -Dverbose -Dincludes=oscuroweb"
+        //            sh "mvn test"
+        //        }
+        //    }
 
         // stage('Package') {
         //     steps {
@@ -37,8 +37,13 @@ pipeline {
         // }
 
         stage('Build Docker image') {
-            echo "-=- building image -=-"
-            docker.build("${APP_NAME}:${env.BUILD_ID}")
+            steps {
+                echo "-=- building image -=-"
+                script {
+                    def image = docker.build("${APP_NAME}:${env.BUILD_ID}")
+                    
+                }
+            }
         }
 
         stage('Run Docker image') {
