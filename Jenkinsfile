@@ -41,8 +41,8 @@ pipeline {
 
         stage('Build Docker image') {
             steps {
-                docker.build("income-predictor-h2o:${env.BUILD_ID}")
-                echo "Not an executable project so no Docker image build is needed"
+                echo "-=- building image -=-"
+                def image = docker.build("income-predictor-h2o:${env.BUILD_ID}")
             }
         }
 
