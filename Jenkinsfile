@@ -2,10 +2,7 @@
 
 pipeline {
     agent {
-        docker {
-            image 'maven:3.5.4-jdk-8'
-            args '--network ci --mount type=volume,source=ci-maven-home,target=/root/.m2'
-        }
+        dockerfile true
     }
 
     environment {
@@ -42,7 +39,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 echo "-=- building image -=-"
-                docker.build("income-predictor-h2o:${env.BUILD_ID}")
+                docker.build("${APP_NAME}:${env.BUILD_ID}")
             }
         }
 
