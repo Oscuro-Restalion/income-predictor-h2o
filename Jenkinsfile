@@ -2,9 +2,7 @@
 
 pipeline {
     agent {
-        dockerfile {
-            label 'docker'
-        }
+        dockerfile true
     }
 
     environment {
@@ -38,7 +36,7 @@ pipeline {
         //     }
         // }
 
-        stage('docker') {
+        stage('Build Docker image') {
             steps {
                 echo "-=- building image -=-"
                 script {
