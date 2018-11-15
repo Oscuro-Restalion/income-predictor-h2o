@@ -42,7 +42,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 echo "-=- building image -=-"
-                def image = docker.build("income-predictor-h2o:${env.BUILD_ID}")
+                docker.build("income-predictor-h2o:${env.BUILD_ID}")
             }
         }
 
