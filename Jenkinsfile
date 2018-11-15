@@ -2,7 +2,9 @@
 
 pipeline {
     agent {
-        dockerfile true
+        dockerfile {
+            label 'docker'
+        }
     }
 
     environment {
@@ -41,7 +43,6 @@ pipeline {
                 echo "-=- building image -=-"
                 script {
                     def image = docker.build("${APP_NAME}:${env.BUILD_ID}")
-                    
                 }
             }
         }
