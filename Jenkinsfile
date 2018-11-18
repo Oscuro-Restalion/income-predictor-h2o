@@ -8,6 +8,7 @@ pipeline {
         APP_NAME = "income-predictor-h2o"
         APP_CONTEXT_ROOT = "oscuroweb"
         TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
+        LOCAL_PATH = "/Users/oscuro/workspace/commitconf2018/income-predictor-data"
     }
 
     stages {
@@ -47,7 +48,7 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker run --rm -p 8383:8383 --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run -p 8383:8383 -v ${env.LOCAL_PATH}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
