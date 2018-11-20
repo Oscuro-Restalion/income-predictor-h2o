@@ -59,9 +59,7 @@ pipeline {
         stage('Push Artifact') {
             steps {
                 echo "-=- push Artifact -=-"
-                script {
-                    image.push()
-            	}
+                sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
             }
         }
     }
