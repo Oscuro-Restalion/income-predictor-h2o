@@ -47,5 +47,5 @@ performance = m.model_performance(test)
 print(performance)
 
 local_path = os.getenv('LOCAL_PATH', '/data/income-predictor')
-modelfile = m.download_mojo(path= local_path +"/output-data/" + m.model_id, get_genmodel_jar=True)
+modelfile = m.download_mojo(path= "/data/income-predictor/output-data/" + m.model_id, get_genmodel_jar=False)
 print("Model saved to " + modelfile)
