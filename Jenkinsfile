@@ -4,14 +4,14 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'localPath', defaultValue: '/Users/oscuro/workspace/commitconf2018/income-predictor-data', description: 'Local path of income preditor data')
+        string(name: 'localPath', defaultValue: '/Users/oscuro/workspace/commitconf2018/income-predictor-data', description: 'Local path of income predictor data')
     }
 
     environment {
         ORG_NAME = "oscuroweb"
         APP_NAME = "income-predictor-h2o"
         APP_CONTEXT_ROOT = "oscuroweb"
-        TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
+        CONTAINER_NAME = "ci-${APP_NAME}"
     }
 
     stages {
@@ -29,7 +29,8 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker run -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker rm -f ${CONTAINER_NAME}"
+                sh "docker run -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
@@ -57,7 +58,11 @@ pipeline {
         stage('Push Artifact') {
             steps {
                 echo "-=- push Artifact -=-"
-                echo "Not an executable project so no Docker image needed, anyway jar file need to be installed"
+                script {
+                	docker.withRegistry('https://hub.docker.com/u/oscurorestalion/', 'docker-hub') {
+        				image.push()
+        			}
+            	}
             }
         }
     }
