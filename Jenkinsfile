@@ -8,10 +8,12 @@ pipeline {
     }
 
     environment {
-        ORG_NAME = "oscuroweb"
+        ORG_NAME = "oscurorestalion"
         APP_NAME = "income-predictor-h2o"
         APP_CONTEXT_ROOT = "oscuroweb"
         CONTAINER_NAME = "ci-${APP_NAME}"
+        IMAGE_NAME = "${ORG_NAME}/${APP_NAME}"
+
     }
 
     stages {
@@ -20,7 +22,7 @@ pipeline {
             steps {
                 echo "-=- building image -=-"
                 script {
-                    def image = docker.build("${APP_NAME}:${env.BUILD_ID}")
+                    def image = docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
                 }
             }
         }
@@ -29,7 +31,7 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker run --rm -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run --rm -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${CONTAINER_NAME} -d ${IMAGE_NAME}:${env.BUILD_ID}"
             }
         }
 
@@ -58,9 +60,7 @@ pipeline {
             steps {
                 echo "-=- push Artifact -=-"
                 script {
-                	docker.withRegistry('https://hub.docker.com/u/oscurorestalion/', 'docker-hub') {
-        				image.push()
-        			}
+                    image.push()
             	}
             }
         }
