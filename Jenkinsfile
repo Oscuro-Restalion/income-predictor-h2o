@@ -57,9 +57,15 @@ pipeline {
         }
 
         stage('Push Artifact') {
+            //environment {
+            //    CREDENTIALS_DOCKERHUB = credentials('docker-hub')
+            //}
             steps {
                 echo "-=- push Artifact -=-"
-                sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
+                    sh "docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}"
+                    sh "docker push ${IMAGE_NAME}:${env.BUILD_ID}"
+                }
             }
         }
     }
