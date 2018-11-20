@@ -29,8 +29,7 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker rm -f ${CONTAINER_NAME}"
-                sh "docker run -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run --rm -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${CONTAINER_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
