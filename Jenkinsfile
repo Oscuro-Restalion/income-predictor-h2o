@@ -57,9 +57,7 @@ pipeline {
         }
 
         stage('Push Artifact') {
-            //environment {
-            //    CREDENTIALS_DOCKERHUB = credentials('docker-hub')
-            //}
+
             steps {
                 echo "-=- push Artifact -=-"
                 withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
