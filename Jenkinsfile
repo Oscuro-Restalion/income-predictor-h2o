@@ -3,37 +3,18 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'localPath', defaultValue: '/Users/oscuro/workspace/commitconf2018/income-predictor-data', description: 'Local path of income preditor data')
+    }
+
     environment {
         ORG_NAME = "oscuroweb"
         APP_NAME = "income-predictor-h2o"
         APP_CONTEXT_ROOT = "oscuroweb"
         TEST_CONTAINER_NAME = "ci-${APP_NAME}-${BUILD_NUMBER}"
-        LOCAL_PATH = "/Users/oscuro/workspace/commitconf2018/income-predictor-data"
     }
 
     stages {
-        // stage('Compile') {
-        //     steps {
-        //         echo "-=- compiling project -=-"
-        //         sh "mvn clean compile"
-        //     }
-        // }
-
-        //    stage('Unit tests') {
-        //        steps {
-        //            echo "-=- execute unit tests -=-"
-        //            sh "mvn dependency:tree -Dverbose -Dincludes=oscuroweb"
-        //            sh "mvn test"
-        //        }
-        //    }
-
-        // stage('Package') {
-        //     steps {
-        //         echo "-=- packaging project -=-"
-        //         sh "mvn package -DskipTests"
-        //         archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        //     }
-        // }
 
         stage('Build Docker image') {
             steps {
@@ -48,7 +29,7 @@ pipeline {
            
             steps {
                 echo "-=- run Docker image -=-"
-                sh "docker run -p 8383:8383 -v ${env.LOCAL_PATH}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
+                sh "docker run -p 8383:8383 -v ${params.localPath}:/data/income-predictor -e LOCAL_PATH=/data/income-predictor --name ${APP_NAME} -d ${APP_NAME}:${env.BUILD_ID}"
             }
         }
 
